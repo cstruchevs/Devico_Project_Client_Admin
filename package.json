@@ -1,0 +1,22 @@
+{
+  "name": "devico_project_client_admin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cstruchevs/Devico_Project_Client_Admin.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cstruchevs/Devico_Project_Client_Admin/issues"
+  },
+  "homepage": "https://github.com/cstruchevs/Devico_Project_Client_Admin#readme",
+  "devDependencies": {
+    "typescript": "^4.7.2"
+  }
+}
