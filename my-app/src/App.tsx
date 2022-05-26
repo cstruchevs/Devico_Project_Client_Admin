@@ -1,12 +1,12 @@
-import React from 'react';
-import './App.css';
+import Layout from './components/Layout'
+import PageRoutes from './routes/Routes'
 
 function App() {
   return (
-    <div className="App">
-  
-    </div>
-  );
+    <Layout>
+      <PageRoutes />
+    </Layout>
+  )
 }
 
-export default App;
+export default App
