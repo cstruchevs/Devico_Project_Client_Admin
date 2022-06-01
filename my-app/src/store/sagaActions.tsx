@@ -1,0 +1,6 @@
+export const sagaActions = {
+    TWO_FACTOR_AUTH: 'TWO_FACTOR_AUTH',
+    TWO_FACTOR_VERIFY: 'TWO_FACTOR_VERIFY',
+    CHANGE_PASSWORD: 'CHANGE_PASSWORD'
+  }
+  

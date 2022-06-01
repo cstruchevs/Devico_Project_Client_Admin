@@ -3,6 +3,7 @@ import createSagaMiddleware from 'redux-saga'
 import authSlice from './auth'
 import notificationSlice from './notifications'
 import saga from './saga'
+import uiSlice from './ui-slice'
 
 export type RootState = ReturnType<typeof store.getState>
 
@@ -19,7 +20,8 @@ const middleware = [
 const store = configureStore({
   reducer: {
     notifications: notificationSlice.reducer,
-    auth: authSlice.reducer
+    auth: authSlice.reducer,
+    ui: uiSlice.reducer
   },
   middleware,
 })
