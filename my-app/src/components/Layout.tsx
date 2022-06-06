@@ -3,6 +3,7 @@ import { FC } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../store'
 import { IUserInterface } from '../store/auth'
+import ChangePassword from './ChangePasswordModal/ChangePasswordModal'
 import SideBarAdmin from './SideBarAdmin/SideBarAdmin'
 import TopNavbar from './TopNavbar/TopNavbar'
 
@@ -15,8 +16,9 @@ const Layout: FC<ILayout> = ({ children }) => {
   return (
     <>
       <CssBaseline />
-      {user && <SideBarAdmin />}
-      {user && <TopNavbar />}
+      <ChangePassword />
+      { <SideBarAdmin />}
+      { <TopNavbar />}
       <main>{children}</main>
     </>
   )

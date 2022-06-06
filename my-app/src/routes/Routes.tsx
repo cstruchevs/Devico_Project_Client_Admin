@@ -17,8 +17,8 @@ const PageRoutes: FC<IPageRoutes> = () => {
   return (
     <Suspense fallback={<span>Loading...</span>}>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/users"element={(user || userLocalStorage) ? <UsersPage/> : <Navigate to="/" />} />
+        <Route path="/" element={<UsersPage />} />
+        {/* <Route path="/users"element={(user || userLocalStorage) ? <UsersPage/> : <Navigate to="/" />} /> */}
       </Routes>
     </Suspense>
   )

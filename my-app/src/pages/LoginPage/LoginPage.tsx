@@ -6,7 +6,7 @@ interface ILoginPage {}
 const LoginPage: FC<ILoginPage> = () => {
   return (
     <>
-      <LoginForm />
+    <LoginForm />
     </>
   )
 }
