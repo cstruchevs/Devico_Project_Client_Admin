@@ -4,12 +4,16 @@ type SliceState = {
   showCodeVerify: boolean
   showRecoverPass: boolean
   showChangePass: boolean
+  showCreateUser: boolean
+  showEditUser: boolean
 }
 
 const initialState: SliceState = {
   showCodeVerify: false,
   showRecoverPass: false,
-  showChangePass: false
+  showChangePass: false,
+  showCreateUser: false,
+  showEditUser: false,
 }
 
 const uiSlice = createSlice({
@@ -23,8 +27,14 @@ const uiSlice = createSlice({
       state.showRecoverPass = !state.showRecoverPass
     },
     toggleChangePass(state) {
-        state.showChangePass = !state.showChangePass
-      },
+      state.showChangePass = !state.showChangePass
+    },
+    toggleCreateUser(state) {
+      state.showCreateUser = !state.showCreateUser
+    },
+    toggleEditUser(state) {
+      state.showEditUser = !state.showEditUser
+    },
   },
 })
 

@@ -3,6 +3,7 @@ import {
   ButtonBase,
   Checkbox,
   Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -12,13 +13,28 @@ import {
   Typography,
 } from '@mui/material'
 import { Box } from '@mui/system'
-import { FC, useState } from 'react'
+import { FC, useCallback, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../../store'
+import { sagaActions } from '../../store/sagaActions'
+import { IUsersInterface } from '../../store/users'
 import EnhancedTableHead from './EnhancedTableHead/EnhancedTableHead'
 import { createData, Data, getComparator, Order } from './UserTableTypes'
+import SortIcon from '@mui/icons-material/Sort'
+import { TopNavIconStack, TopNavIconStackTypogrphy, TopNavUsers } from './UserTableStyles'
+import { uiActions } from '../../store/ui-slice'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 interface IUsersTable {}
+interface StateType {
+  from: { pathname: string},
+}
 
 const UsersTables: FC<IUsersTable> = () => {
+  const dispatch = useDispatch()
+  let navigate = useNavigate()
+  
+
   const [order, setOrder] = useState<Order>('asc')
   const [orderBy, setOrderBy] = useState<keyof Data>('name')
   const [selected, setSelected] = useState<readonly string[]>([])
@@ -26,15 +42,13 @@ const UsersTables: FC<IUsersTable> = () => {
   const [dense, setDense] = useState(false)
   const [rowsPerPage, setRowsPerPage] = useState(5)
 
-  const rows = [
-    createData('Dmitry Novik', '775-015-1143', 'Novik15@gmail.com', 'View Details'),
-    createData('Dmitry Novik', '775-015-1143', 'Novik15@gmail.com', 'View Details'),
-    createData('Dmitry Novik', '775-015-1143', 'Novik15@gmail.com', 'View Details'),
-    createData('Dmitry Novik', '775-015-1143', 'Novik15@gmail.com', 'View Details'),
-    createData('Dmitry Novik', '775-015-1143', 'Novik15@gmail.com', 'View Details'),
-    createData('Dmitry Novik', '775-015-1143', 'Novik15@gmail.com', 'View Details'),
-    createData('Dmitry Novik', '775-015-1143', 'Novik15@gmail.com', 'View Details'),
-  ]
+  const userCount = useSelector<RootState, number>(state => state.users.count)
+  const users = useSelector<RootState, IUsersInterface[]>(state => state.users.users)
+  console.log(users)
+
+  const rows = users.map(user => {
+    return createData(user.id, user.name || '-', user.phone || '-', user.email, 'View Details')
+  })
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
     const isAsc = orderBy === property && order === 'asc'
@@ -44,7 +58,7 @@ const UsersTables: FC<IUsersTable> = () => {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map(n => n.name)
+      const newSelecteds = rows.map(n => n.email)
       setSelected(newSelecteds)
       return
     }
@@ -73,16 +87,38 @@ const UsersTables: FC<IUsersTable> = () => {
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
+    dispatch({ type: sagaActions.GET_USERS, payload: { page, limit: rowsPerPage } })
   }
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10))
     setPage(0)
+    dispatch({ type: sagaActions.GET_USERS, payload: { page, limit: rowsPerPage } })
   }
 
   const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDense(event.target.checked)
   }
+
+  const deleteUser = (email: string) => {
+    dispatch({ type: sagaActions.DELETE_USER, payload: { email } })
+  }
+
+  const toggleCreateUser = useCallback(() => {
+    dispatch(uiActions.toggleCreateUser())
+  }, [dispatch])
+
+  const toggleEditUser = useCallback(
+    (id: string) => {
+      navigate('', {
+        state: {
+          userId: id,
+        },
+      })
+      dispatch(uiActions.toggleEditUser())
+    },
+    [dispatch, navigate]
+  )
 
   const isSelected = (name: string) => selected.indexOf(name) !== -1
 
@@ -90,6 +126,16 @@ const UsersTables: FC<IUsersTable> = () => {
 
   return (
     <Box sx={{ width: '100%' }}>
+      <TopNavUsers mb={2}>
+        <Button>Inviting User</Button>
+        <Stack direction="row">
+          <TopNavIconStack>
+            <SortIcon sx={{ fontSize: '18px' }} />
+            <TopNavIconStackTypogrphy>Sort</TopNavIconStackTypogrphy>
+          </TopNavIconStack>
+          <Button onClick={toggleCreateUser}>+ Create User</Button>
+        </Stack>
+      </TopNavUsers>
       <Paper sx={{ width: '100%', mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
@@ -112,22 +158,22 @@ const UsersTables: FC<IUsersTable> = () => {
                 .sort(getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name)
+                  const isItemSelected = isSelected(row.email)
                   const labelId = `enhanced-table-checkbox-${index}`
 
                   return (
                     <TableRow
                       hover
-                      onClick={event => handleClick(event, row.name)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.email}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
                         <Checkbox
                           color="primary"
+                          onClick={event => handleClick(event, row.email)}
                           checked={isItemSelected}
                           inputProps={{
                             'aria-labelledby': labelId,
@@ -135,19 +181,16 @@ const UsersTables: FC<IUsersTable> = () => {
                         />
                       </TableCell>
                       <TableCell component="th" id={labelId} scope="row" padding="none">
-                        {row.name}
+                        {row?.name}
                       </TableCell>
-                      <TableCell align="right">{row.name}</TableCell>
-                      <TableCell align="right">{row.email}</TableCell>
-                      <TableCell align="right">{row.phone}</TableCell>
-                      <TableCell align="right">
-                        <Typography>View Details</Typography>
+                      <TableCell align="left">{row?.phone}</TableCell>
+                      <TableCell align="left">{row.email}</TableCell>
+                      <TableCell align="left">{row?.details}</TableCell>
+                      <TableCell align="left">
+                        <Button onClick={() => toggleEditUser(row.id)}>Edit</Button>
                       </TableCell>
-                      <TableCell align="right">
-                        <Button>Edit</Button>
-                      </TableCell>
-                      <TableCell align="right">
-                        <Button>Delete</Button>
+                      <TableCell align="left">
+                        <Button onClick={() => deleteUser(row.email)}>Delete</Button>
                       </TableCell>
                     </TableRow>
                   )
@@ -167,7 +210,7 @@ const UsersTables: FC<IUsersTable> = () => {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={userCount}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

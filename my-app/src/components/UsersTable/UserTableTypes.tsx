@@ -1,4 +1,5 @@
 export interface Data {
+  id: string
   phone: string
   email: string
   name: string
@@ -7,8 +8,9 @@ export interface Data {
 
 export type Order = 'asc' | 'desc'
 
-export function createData(name: string, phone: string, email: string, details: string): Data {
+export function createData( id: string, name: string, phone: string, email: string, details: string): Data {
   return {
+    id,
     name,
     phone,
     email,

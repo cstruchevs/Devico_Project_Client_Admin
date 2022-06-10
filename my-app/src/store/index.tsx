@@ -4,6 +4,7 @@ import authSlice from './auth'
 import notificationSlice from './notifications'
 import saga from './saga'
 import uiSlice from './ui-slice'
+import usersSlice from './users'
 
 export type RootState = ReturnType<typeof store.getState>
 
@@ -21,7 +22,8 @@ const store = configureStore({
   reducer: {
     notifications: notificationSlice.reducer,
     auth: authSlice.reducer,
-    ui: uiSlice.reducer
+    ui: uiSlice.reducer,
+    users: usersSlice.reducer
   },
   middleware,
 })

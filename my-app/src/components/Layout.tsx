@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../store'
 import { IUserInterface } from '../store/auth'
 import ChangePassword from './ChangePasswordModal/ChangePasswordModal'
+import CreateUser from './CreateUser/CreateUser'
+import EditUser from './EditUser/EditUser'
 import SideBarAdmin from './SideBarAdmin/SideBarAdmin'
 import TopNavbar from './TopNavbar/TopNavbar'
 
@@ -17,6 +19,8 @@ const Layout: FC<ILayout> = ({ children }) => {
     <>
       <CssBaseline />
       <ChangePassword />
+      <CreateUser />
+      <EditUser />
       { <SideBarAdmin />}
       { <TopNavbar />}
       <main>{children}</main>

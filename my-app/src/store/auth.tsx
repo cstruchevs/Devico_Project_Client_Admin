@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import { ActionReducer } from './index'
 
 export interface IUserInterface {
+  name: string
   id: string
   email: string
 }
