@@ -67,3 +67,24 @@ a:hover {
   text-align: center;
   background: #ececec;
 }
+
+.wrapper-class {
+  padding: 1rem;
+  min-width: 300px;  
+}
+.editor-class {
+  background-color:rgb(244, 239, 239);
+  min-width: 300px;
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #ccc;
+}
+.toolbar-class {
+  border: 1px solid #ccc;
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  flex-wrap: wrap;
+  min-width: 300px;
+}
+

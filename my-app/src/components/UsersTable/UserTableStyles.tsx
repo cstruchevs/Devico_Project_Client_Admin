@@ -29,3 +29,12 @@ export const TopNavIconStackTypogrphy = styled(Typography)({
   marginLeft: '5px',
   fontSize: '1.8em',
 })
+
+export const TypygoraphyDetails = styled(Typography)({
+  textDecoration: 'underline',
+  color: '#3581F7',
+  ':hover': {
+    cursor: 'pointer'
+  }
+})
+

@@ -15,7 +15,8 @@ import { RootState } from '../../../store'
 import { useDispatch, useSelector } from 'react-redux'
 import { uiActions } from '../../../store/ui-slice'
 import { useNavigate } from 'react-router-dom'
-import {sagaActions} from '../../../store/sagaActions'
+import { sagaActions } from '../../../store/sagaActions'
+import { Box } from '@mui/system'
 
 interface ILoginCodeVerify {}
 
@@ -26,7 +27,10 @@ const schema = yup.object().shape({
 const LoginCodeVerify: FC<ILoginCodeVerify> = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const isShowFormVerification = useSelector<RootState, boolean>(state => state.ui.showCodeVerify)
+
+  const isShowFormVerification = useSelector((state: RootState) => state.ui.showCodeVerify)
+  const qrcode = useSelector((state: RootState) => state.auth.qrcode)
+
   const {
     register,
     handleSubmit,
@@ -36,14 +40,18 @@ const LoginCodeVerify: FC<ILoginCodeVerify> = () => {
     mode: 'onSubmit',
   })
 
-  const onSubmitHandler = useCallback((data: any) => {
-    dispatch({
+  const onSubmitHandler = useCallback(
+    (data: any) => {
+      dispatch({
         type: sagaActions.TWO_FACTOR_VERIFY,
-        payload: { ...data }
+        payload: { ...data },
       })
-    dispatch(uiActions.toggleCodeVerify())
-    navigate('/users', { replace: true })
-  }, [dispatch])
+      dispatch(uiActions.toggleCodeVerify())
+      console.log("asd")
+      navigate('/users', { replace: true })
+    },
+    [dispatch, navigate],
+  )
 
   return (
     <Dialog open={isShowFormVerification}>
@@ -51,7 +59,17 @@ const LoginCodeVerify: FC<ILoginCodeVerify> = () => {
       <form onSubmit={handleSubmit(onSubmitHandler)}>
         <DialogContent>
           <Stack direction="column" sx={{ margin: 'auto' }}>
-            <StyledTypography>GOOGLE AUTHENTICATOR CODE*</StyledTypography>
+            <Box
+              component="img"
+              alt="qr-code"
+              src={qrcode}
+              sx={{
+                height: 150,
+                width: 150,
+                margin: 'auto',
+              }}
+            />
+            <StyledTypography>AUTHENTICATOR CODE*</StyledTypography>
             <StyledTextField
               {...register('code')}
               name="code"
