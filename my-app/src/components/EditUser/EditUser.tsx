@@ -6,8 +6,6 @@ import * as yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   ConfirmStyledButton,
-  StyledButton,
-  StyledDialogActionsBox,
   StyledDialogTitle,
   StyledTextField,
   StyledTypography,
@@ -35,7 +33,7 @@ const EditUser: FC<IEditUser> = () => {
   const dispatch = useDispatch()
   const location:any = useLocation()
 
-  const isShowEditUser = useSelector<RootState, boolean>(state => state.ui.showEditUser)
+  const isShowEditUser = useSelector((state:RootState )=> state.ui.showEditUser)
 
   const {
     register,
@@ -119,7 +117,7 @@ const EditUser: FC<IEditUser> = () => {
           <Button onClick={toggleEditUser} sx={{ marginLeft: 'auto' }}>
             Cancel
           </Button>
-          <ConfirmStyledButton type="submit">Create User</ConfirmStyledButton>
+          <ConfirmStyledButton type="submit">Edit User</ConfirmStyledButton>
         </DialogActions>
       </form>
     </Dialog>

@@ -25,12 +25,12 @@ export const upSidebarLinks = [
     {
         icon: GroupIcon,
         title: "List of the users",
-        link: "/events"
+        link: "/users"
     },
     {
         icon: AdminPanelSettingsIcon,
         title: "List of the admins",
-        link: "/events"
+        link: "/admins"
     },
 ]
 

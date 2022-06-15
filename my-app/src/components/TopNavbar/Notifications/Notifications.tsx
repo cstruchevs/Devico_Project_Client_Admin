@@ -55,8 +55,6 @@ const Notifications: FC<INotification> = ({
     </Stack>
   )
 
-  console.log(notifications)
-
   return (
     <StyledNotificationPopover
       id={idNotification}

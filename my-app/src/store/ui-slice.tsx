@@ -1,19 +1,26 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { ActionReducer } from './index'
 
 type SliceState = {
+  showLoginForm: boolean
   showCodeVerify: boolean
   showRecoverPass: boolean
   showChangePass: boolean
   showCreateUser: boolean
   showEditUser: boolean
+  showInviteUsers: boolean
+  indexCar: string | number
 }
 
 const initialState: SliceState = {
+  showLoginForm: true,
   showCodeVerify: false,
   showRecoverPass: false,
   showChangePass: false,
   showCreateUser: false,
   showEditUser: false,
+  showInviteUsers: false,
+  indexCar: 0,
 }
 
 const uiSlice = createSlice({
@@ -21,19 +28,52 @@ const uiSlice = createSlice({
   initialState: initialState,
   reducers: {
     toggleCodeVerify(state) {
-      state.showCodeVerify = !state.showCodeVerify
+      return {
+        ...state,
+        showCodeVerify: !state.showCodeVerify,
+      }
     },
     toggleRecoverPass(state) {
-      state.showRecoverPass = !state.showRecoverPass
+      return {
+        ...state,
+        showRecoverPass: !state.showRecoverPass,
+      }
     },
     toggleChangePass(state) {
-      state.showChangePass = !state.showChangePass
+      return {
+        ...state,
+        showChangePass: !state.showChangePass,
+      }
     },
     toggleCreateUser(state) {
-      state.showCreateUser = !state.showCreateUser
+      return {
+        ...state,
+        showCreateUser: !state.showCreateUser,
+      }
     },
     toggleEditUser(state) {
-      state.showEditUser = !state.showEditUser
+      return {
+        ...state,
+        showEditUser: !state.showEditUser,
+      }
+    },
+    toggleInviteUsers(state) {
+      return {
+        ...state,
+        showInviteUsers: !state.showInviteUsers,
+      }
+    },
+    toggleLoginForm(state) {
+      return {
+        ...state,
+        showLoginForm: !state.showLoginForm,
+      }
+    },
+    setCarId(state, action: ActionReducer<{ index: string | number }>) {
+      return {
+        ...state,
+        indexCar: action.payload.index,
+      }
     },
   },
 })

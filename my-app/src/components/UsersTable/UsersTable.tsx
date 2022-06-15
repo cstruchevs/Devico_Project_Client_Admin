@@ -1,6 +1,5 @@
 import {
   Button,
-  ButtonBase,
   Checkbox,
   Paper,
   Stack,
@@ -21,19 +20,15 @@ import { IUsersInterface } from '../../store/users'
 import EnhancedTableHead from './EnhancedTableHead/EnhancedTableHead'
 import { createData, Data, getComparator, Order } from './UserTableTypes'
 import SortIcon from '@mui/icons-material/Sort'
-import { TopNavIconStack, TopNavIconStackTypogrphy, TopNavUsers } from './UserTableStyles'
+import { TopNavIconStack, TopNavIconStackTypogrphy, TopNavUsers, TypygoraphyDetails } from './UserTableStyles'
 import { uiActions } from '../../store/ui-slice'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 interface IUsersTable {}
-interface StateType {
-  from: { pathname: string},
-}
 
 const UsersTables: FC<IUsersTable> = () => {
   const dispatch = useDispatch()
   let navigate = useNavigate()
-  
 
   const [order, setOrder] = useState<Order>('asc')
   const [orderBy, setOrderBy] = useState<keyof Data>('name')
@@ -41,13 +36,10 @@ const UsersTables: FC<IUsersTable> = () => {
   const [page, setPage] = useState(0)
   const [dense, setDense] = useState(false)
   const [rowsPerPage, setRowsPerPage] = useState(5)
-
   const userCount = useSelector<RootState, number>(state => state.users.count)
   const users = useSelector<RootState, IUsersInterface[]>(state => state.users.users)
-  console.log(users)
-
   const rows = users.map(user => {
-    return createData(user.id, user.name || '-', user.phone || '-', user.email, 'View Details')
+    return createData(user.id, user.fullName || '-', user.phone || '-', user.email, 'View Details')
   })
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
@@ -96,10 +88,6 @@ const UsersTables: FC<IUsersTable> = () => {
     dispatch({ type: sagaActions.GET_USERS, payload: { page, limit: rowsPerPage } })
   }
 
-  const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDense(event.target.checked)
-  }
-
   const deleteUser = (email: string) => {
     dispatch({ type: sagaActions.DELETE_USER, payload: { email } })
   }
@@ -107,6 +95,14 @@ const UsersTables: FC<IUsersTable> = () => {
   const toggleCreateUser = useCallback(() => {
     dispatch(uiActions.toggleCreateUser())
   }, [dispatch])
+
+  const toggleInviteUsers = useCallback(() => {
+    dispatch(uiActions.toggleInviteUsers())
+  }, [dispatch])
+
+  const toggleUserDetails = useCallback((id:string) => {
+    navigate(`/user-info/${id}`)
+  }, [navigate])
 
   const toggleEditUser = useCallback(
     (id: string) => {
@@ -117,7 +113,7 @@ const UsersTables: FC<IUsersTable> = () => {
       })
       dispatch(uiActions.toggleEditUser())
     },
-    [dispatch, navigate]
+    [dispatch, navigate],
   )
 
   const isSelected = (name: string) => selected.indexOf(name) !== -1
@@ -127,7 +123,7 @@ const UsersTables: FC<IUsersTable> = () => {
   return (
     <Box sx={{ width: '100%' }}>
       <TopNavUsers mb={2}>
-        <Button>Inviting User</Button>
+        <Button onClick={toggleInviteUsers}>Inviting User</Button>
         <Stack direction="row">
           <TopNavIconStack>
             <SortIcon sx={{ fontSize: '18px' }} />
@@ -185,7 +181,9 @@ const UsersTables: FC<IUsersTable> = () => {
                       </TableCell>
                       <TableCell align="left">{row?.phone}</TableCell>
                       <TableCell align="left">{row.email}</TableCell>
-                      <TableCell align="left">{row?.details}</TableCell>
+                      <TableCell align="left">
+                        <TypygoraphyDetails onClick={() => {toggleUserDetails(row.id)}}>{row?.details}</TypygoraphyDetails>{' '}
+                      </TableCell>
                       <TableCell align="left">
                         <Button onClick={() => toggleEditUser(row.id)}>Edit</Button>
                       </TableCell>

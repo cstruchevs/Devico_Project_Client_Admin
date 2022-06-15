@@ -1,5 +1,5 @@
 import { Dialog, DialogActions, DialogContent, Divider, Stack } from '@mui/material'
-import { FC, useCallback } from 'react'
+import { FC, memo, useCallback } from 'react'
 import InpurtErrorHandler from '../InputErrorsHandler'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -14,6 +14,7 @@ import {
 import { RootState } from '../../store'
 import { useDispatch, useSelector } from 'react-redux'
 import { uiActions } from '../../store/ui-slice'
+import { sagaActions } from '../../store/sagaActions'
 
 interface IChangePassword {}
 
@@ -24,7 +25,10 @@ const schema = yup.object().shape({
 
 const ChangePassword: FC<IChangePassword> = () => {
   const dispatch = useDispatch()
+
   const isShowChangePass = useSelector<RootState, boolean>(state => state.ui.showChangePass)
+  const userId = useSelector((state: RootState) => state.auth.user?.id)
+
   const {
     register,
     handleSubmit,
@@ -41,11 +45,11 @@ const ChangePassword: FC<IChangePassword> = () => {
 
   const onSubmitHandler = useCallback(
     (data: any) => {
-      console.log(data)
+      dispatch({type: sagaActions.CHANGE_PASSWORD, payload: {...data, id: userId}})
       dispatch(uiActions.toggleChangePass())
       reset()
     },
-    [dispatch, reset],
+    [dispatch, reset, userId],
   )
 
   return (
@@ -90,4 +94,4 @@ const ChangePassword: FC<IChangePassword> = () => {
   )
 }
 
-export default ChangePassword
+export default memo(ChangePassword)

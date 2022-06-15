@@ -26,6 +26,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import {sagaActions} from '../../store/sagaActions'
 import * as yup from 'yup'
 import { RootState } from '../../store'
+import { uiActions } from '../../store/ui-slice'
 
 interface ILoginForm {}
 
@@ -36,7 +37,9 @@ const schema = yup.object().shape({
 
 const LoginForm: FC<ILoginForm> = () => {
   const dispatch = useDispatch()
-  const [isShow, setIsShow] = useState(true)
+
+  const isShowLoginForm = useSelector((state: RootState) => state.ui.showLoginForm)
+
   const {
     register,
     handleSubmit,
@@ -57,11 +60,12 @@ const LoginForm: FC<ILoginForm> = () => {
       type: sagaActions.TWO_FACTOR_AUTH,
       payload: { ...data }
     })
-    setIsShow(false)
+    dispatch(uiActions.toggleLoginForm())
+    dispatch(uiActions.toggleCodeVerify())
   }, [dispatch])
 
   return (
-    <Dialog open={isShow}>
+    <Dialog open={isShowLoginForm}>
       <StyledDialogTitle>Sign In</StyledDialogTitle>
       <Divider />
       <form onSubmit={handleSubmit(onSubmitHandler)}>

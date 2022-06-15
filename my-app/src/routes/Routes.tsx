@@ -7,18 +7,19 @@ import checkLocalStorage from '../services/checkLocalStorage'
 
 interface IPageRoutes {}
 
-const UsersPage = React.lazy(() => import('../pages/UserPage/UserPage'))
 const LoginPage = React.lazy(() => import('../pages/LoginPage/LoginPage'))
+const UsersPage = React.lazy(() => import('../pages/UserPage/UserPage'))
+const UserPage = React.lazy(() => import('../pages/UserInfoPage/UserInfoPage'))
 
 const PageRoutes: FC<IPageRoutes> = () => {
   const user = useSelector<RootState, IUserInterface | null>(state => state.auth.user)
   
-  const userLocalStorage = checkLocalStorage()
   return (
     <Suspense fallback={<span>Loading...</span>}>
       <Routes>
         <Route path="/" element={<UsersPage />} />
-        {/* <Route path="/users"element={(user || userLocalStorage) ? <UsersPage/> : <Navigate to="/" />} /> */}
+        <Route path="/users"element={(user) ? <UsersPage/> : <Navigate to="/" />} />
+        <Route path="/user-info/:userId"element={ <UserPage/>}  />
       </Routes>
     </Suspense>
   )
