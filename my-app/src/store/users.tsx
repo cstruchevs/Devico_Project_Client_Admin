@@ -14,12 +14,25 @@ export interface IDriversData {
   dob?: Date
 }
 
+export interface ICar {
+  id: string,
+  model: string
+  year: string
+  capaciteEngine: string
+  regVihicleNumber: string
+  technicalPassNumber: string
+  viaNumber: string
+  driveTrain: string
+  fullNameOwner: string
+}
+
 export interface IUsersInterface {
   id: string
   email: string
   fullName?: string
   phone?: string
   driversData: IDriversData
+  cars: ICar[]
 }
 
 interface IAuthSlice {

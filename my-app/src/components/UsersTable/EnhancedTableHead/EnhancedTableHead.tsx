@@ -53,14 +53,14 @@ const EnhancedTableHead = (props: EnhancedTableProps) => {
   ))
 
   const SelectedHeadCells = (
-      <TableCell key="selected" align="left" padding="normal">
-        <TableHeadStack direction="row">
-          {numSelected} selected
-          <IconButton>
-            <DeleteIcon sx={{ fontSize: '16px' }} />
-          </IconButton>
-        </TableHeadStack>
-      </TableCell>
+    <TableCell key="selected" align="left" padding="normal">
+      <TableHeadStack direction="row">
+        {numSelected} selected
+        <IconButton>
+          <DeleteIcon sx={{ fontSize: '16px' }} />
+        </IconButton>
+      </TableHeadStack>
+    </TableCell>
   )
   return (
     <TableHead>

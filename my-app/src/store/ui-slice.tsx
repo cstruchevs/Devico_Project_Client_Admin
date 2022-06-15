@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { ActionReducer } from './index'
 
 type SliceState = {
   showLoginForm: boolean
@@ -8,6 +9,7 @@ type SliceState = {
   showCreateUser: boolean
   showEditUser: boolean
   showInviteUsers: boolean
+  indexCar: string | number
 }
 
 const initialState: SliceState = {
@@ -18,6 +20,7 @@ const initialState: SliceState = {
   showCreateUser: false,
   showEditUser: false,
   showInviteUsers: false,
+  indexCar: 0,
 }
 
 const uiSlice = createSlice({
@@ -25,45 +28,51 @@ const uiSlice = createSlice({
   initialState: initialState,
   reducers: {
     toggleCodeVerify(state) {
-       return {
+      return {
         ...state,
-        showCodeVerify: !state.showCodeVerify
+        showCodeVerify: !state.showCodeVerify,
       }
     },
     toggleRecoverPass(state) {
-       return {
+      return {
         ...state,
-        showRecoverPass: !state.showRecoverPass
+        showRecoverPass: !state.showRecoverPass,
       }
     },
     toggleChangePass(state) {
-       return {
+      return {
         ...state,
-        showChangePass: !state.showChangePass
+        showChangePass: !state.showChangePass,
       }
     },
     toggleCreateUser(state) {
-       return {
+      return {
         ...state,
-        showCreateUser: !state.showCreateUser
+        showCreateUser: !state.showCreateUser,
       }
     },
     toggleEditUser(state) {
-       return {
+      return {
         ...state,
-        showEditUser: !state.showEditUser
+        showEditUser: !state.showEditUser,
       }
     },
     toggleInviteUsers(state) {
-       return {
+      return {
         ...state,
-        showInviteUsers: !state.showInviteUsers
+        showInviteUsers: !state.showInviteUsers,
       }
     },
     toggleLoginForm(state) {
       return {
         ...state,
-        showLoginForm: !state.showLoginForm
+        showLoginForm: !state.showLoginForm,
+      }
+    },
+    setCarId(state, action: ActionReducer<{ index: string | number }>) {
+      return {
+        ...state,
+        indexCar: action.payload.index,
       }
     },
   },

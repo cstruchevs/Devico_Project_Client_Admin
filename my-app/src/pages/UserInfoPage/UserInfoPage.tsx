@@ -2,6 +2,7 @@ import { Grid, Stack } from '@mui/material'
 import { FC, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import UserCarsData from '../../components/UserInfoComponents/UserCarsData/UserCarsData'
 import UserData from '../../components/UserInfoComponents/UserData/UserData'
 import UserDriversData from '../../components/UserInfoComponents/UserDriversData/UserDriversData'
 import UserInfoHeader from '../../components/UserInfoComponents/UserInfoHeader/UserInfoHeader'
@@ -14,7 +15,7 @@ const UserInfoPage: FC<IUserInfoPage> = () => {
 
   return (
     <section>
-      <Stack direction='column'>
+      <Stack direction="column">
         <UserInfoHeader userId={userId} />
         <Grid container spacing={2}>
           <Grid item xs={6} md={4}>
@@ -23,7 +24,9 @@ const UserInfoPage: FC<IUserInfoPage> = () => {
           <Grid item xs={6} md={8}>
             <UserDriversData userId={userId} />
           </Grid>
-          <Grid item md={12}></Grid>
+          <Grid item md={12}>
+            <UserCarsData userId={userId}/>
+          </Grid>
         </Grid>
       </Stack>
     </section>
